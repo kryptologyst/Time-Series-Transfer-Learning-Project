@@ -1,0 +1,71 @@
+# Configuration file for Time Series Transfer Learning Project
+data:
+  source:
+    type: "synthetic"
+    function: "sine_wave"
+    shift: 0
+    noise: 0.1
+    length: 500
+    frequency: 1.0
+  
+  target:
+    type: "synthetic"
+    function: "sine_wave"
+    shift: 0.785  # π/4
+    noise: 0.1
+    length: 500
+    frequency: 1.0
+  
+  sequence_length: 30
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+
+models:
+  lstm:
+    hidden_dim: 32
+    num_layers: 1
+    dropout: 0.1
+    learning_rate: 0.005
+    batch_size: 32
+    epochs_pretrain: 10
+    epochs_finetune: 5
+  
+  arima:
+    order: [1, 1, 1]
+    seasonal_order: [1, 1, 1, 12]
+  
+  prophet:
+    yearly_seasonality: true
+    weekly_seasonality: true
+    daily_seasonality: false
+    seasonality_mode: "multiplicative"
+
+anomaly_detection:
+  isolation_forest:
+    contamination: 0.1
+    random_state: 42
+  
+  autoencoder:
+    encoding_dim: 16
+    learning_rate: 0.001
+    epochs: 50
+
+visualization:
+  figure_size: [12, 8]
+  style: "seaborn-v0_8"
+  color_palette: "husl"
+  save_plots: true
+  plot_format: "png"
+  dpi: 300
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/timeseries.log"
+
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  plots_dir: "plots"
+  logs_dir: "logs"
